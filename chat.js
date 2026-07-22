@@ -914,24 +914,19 @@ function suggestQuickReplies(replyText, data = {}) {
     }
     // ── GREETING ──
     else if (isGreeting) {
-        const userName = getPortalUserName();
-        const firstName = userName && userName !== 'Cargando...' ? userName.split(' ')[0] : '';
         addQuickReplies([
-            { label: firstName ? 'Mis pólizas' : 'Ver pólizas' },
-            { label: 'Reportar siniestro', url: 'https://linktree.rafaelallendeseguros.digital/?modal=siniestro' },
-            { label: 'Agendar asesoría', url: 'https://linktree.rafaelallendeseguros.digital/?modal=asesoria' },
-            { label: 'Emergencia / Auxilio' },
+            { label: 'Soy cliente' },
+            { label: 'No soy cliente' },
         ]);
-        contextualHint = 'Por otra cosa, escribime o mandame un audio';
+        contextualHint = 'Elegí para continuarte ayudando';
     }
     // ── HELP OFFER (after answering) ──
     else if (isHelpOffer) {
         addQuickReplies([
-            { label: 'Mis pólizas' },
-            { label: 'Reportar siniestro', url: 'https://linktree.rafaelallendeseguros.digital/?modal=siniestro' },
-            { label: 'Hablar con asesor' },
+            { label: 'Soy cliente' },
+            { label: 'No soy cliente' },
         ]);
-        contextualHint = 'Por otra cosa, escribime o mandame un audio';
+        contextualHint = 'Elegí para continuarte ayudando';
     }
 
     // Apply contextual hint
