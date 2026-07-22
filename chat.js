@@ -668,7 +668,6 @@ function addQuickReplies(replies) {
             });
         } else {
             chip.addEventListener('click', () => {
-                quickRepliesHistory = [];
                 container.remove();
                 lastUserMessage = label;
                 lastUserIntent = detectUserIntent(label);
