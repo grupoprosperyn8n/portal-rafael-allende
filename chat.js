@@ -808,21 +808,18 @@ function suggestQuickReplies(replyText, data = {}) {
     // ── FLOW 2: CLAIM REPORT ──
     else if (isClaim) {
         addQuickReplies([
-            { label: 'Cargar denuncia', url: 'https://linktree.rafaelallendeseguros.digital/?modal=siniestro' },
-            { label: 'Hablar con asesor' },
-            { label: 'Volver al menú' },
+            { label: 'Soy cliente' },
+            { label: 'No soy cliente' },
         ]);
-        contextualHint = 'Usá el botón para iniciar la denuncia formal';
+        contextualHint = 'Para cargar la denuncia, primero verifiquemos tu estado';
     }
     // ── FLOW 3: POLICY (shows after validation) ──
     else if (isPolicySensitive) {
         addQuickReplies([
-            { label: 'Fecha de vencimiento' },
-            { label: 'Cobertura' },
-            { label: 'Estado de póliza' },
-            { label: 'Ver mis pólizas' },
+            { label: 'Soy cliente' },
+            { label: 'No soy cliente' },
         ]);
-        contextualHint = 'Elegí qué querés revisar';
+        contextualHint = 'Para ver tus pólizas, primero verifiquemos tu estado';
     }
     // ── FLOW 4: FAQ ──
     else if (isFaq) {
