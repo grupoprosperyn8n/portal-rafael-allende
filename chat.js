@@ -434,6 +434,13 @@ function detectUserIntent(text) {
     // FLOW 11 — THANKS / GOODBYE
     if (/\b(gracias|te agradezco|genial|perfecto|listo|eso era todo|nos vemos|chau\b|saludos|hasta luego|bye)\b/i.test(lower) && text.length < 30) return 'thanks_goodbye';
 
+    // FLOW 11b — CLIENT STATUS RESPONSES
+    if (/soy cliente|ya soy cliente|soy cliente de|tengo cuenta|tengo p[oó]liza|ya me (registr[ée]|valid[ée])/i.test(lower)) return 'client_yes';
+
+    if (/no soy cliente|no tengo cuenta|no tengo p[oó]liza|nunca (me |)registr[ée]|no estoy registrado|nuevo cliente|quiero registrarme|primera vez/i.test(lower)) return 'client_no';
+
+    if (/seguir sin validarme|sin validaci[oó]n|continuar sin|no validar|skip validation|como no cliente/i.test(lower)) return 'continue_without_validation';
+
     // FLOW 12 — CANCEL / CHANGE
     if (/dar de baja|darme de baja|cancelar (p[oó]liza|seguro)|no quiero m[aá]s|no (lo |)renuevo|modificar (p[oó]liza|seguro)|cambiar (de |)cobertura|actualizar datos|cambio de (domicilio|veh[ií]culo)|vend[ií] el (auto|veh[ií]culo)/i.test(lower)) return 'cancel_change';
 
