@@ -28,6 +28,7 @@ let lastPortalPassword = '';
 let conversationIntent = ''; // Persisted intent from n8n
 let lastUserMessage = ''; // Track last user message for quick replies context
 let lastUserIntent = ''; // Locally detected intent from user message
+let clientValidationFlow = ''; // 'asking_if_client', 'client_validated', 'not_client'
 
 function getWebChatSessionId() {
     let sessionId = localStorage.getItem(WEBCHAT_SESSION_KEY);
