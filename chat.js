@@ -88,7 +88,8 @@ function makeBtn(url, label) {
 }
 
 function linkify(text) {
-    const escaped = escapeHtml(text);
+    const stripped = text.replace(/<[^>]+>/g, '').trim();
+    const escaped = escapeHtml(stripped);
     const mdLinks = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
     const withMd = escaped.replace(mdLinks, (match, linkText, url) => {
         const cleanUrl = url.replace(/[),.;!?]+$/, '');
