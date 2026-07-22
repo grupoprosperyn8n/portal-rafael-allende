@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaaS Portal | Autogestión</title>
+    <!-- Mismos estilos base resguardando la lógica de diseño -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="portal.css?v=9">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="portal-body">
+    <!-- El fondo de pantalla ya está definido en style.css para todo el body,
+         y toma overlay o degradado según configuración -->
+    <div class="dashboard-layout">
+        <header class="dashboard-header glass-panel" aria-label="Cabecera del Dashboard">
+            <div class="dh-left">
+                <div class="dh-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                </div>
+                <div class="dh-titles">
+                    <h1>Portal de Autogestión</h1>
+                    <p>Bienvenido a su portal personal</p>
+                </div>
+            </div>
+            <div class="dh-right">
+                <div class="quick-actions">
+                    <a href="https://linktree.rafaelallendeseguros.digital/?modal=siniestro" class="action-btn-small action-btn-danger" target="_blank" title="Reportar Siniestro">
+                        <i class="fas fa-car-crash"></i>
+                        <span>Reportar Siniestro</span>
+                    </a>
+                    <a href="https://linktree.rafaelallendeseguros.digital/?modal=asesoria" class="action-btn-small action-btn-success" target="_blank" title="Agendar Asesoría Online">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Agendar Asesoría</span>
+                    </a>
+                </div>
+                <div class="dh-user">
+                    <span>Cliente</span>
+                    <strong id="user-display-name">Cargando...</strong>
+                </div>
+
+                <button type="button" id="logoutBtn" class="logout-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    Salir
+                </button>
+            </div>
+        </header>
+
+        <nav class="dashboard-nav glass-panel" aria-label="Navegación del Dashboard">
+            <button type="button" class="tab-btn tab-btn-form tab-btn-perfil active" data-target="perfil">
+                <span class="tab-form-icon" aria-hidden="true"><i class="fas fa-user"></i></span> Mi Perfil
+            </button>
+            <button type="button" class="tab-btn tab-btn-form tab-btn-polizas" data-target="polizas">
+                <span class="tab-form-icon" aria-hidden="true"><i class="fas fa-file-lines"></i></span> Pólizas
+            </button>
+            <button type="button" class="tab-btn tab-btn-form tab-btn-gestiones" data-target="gestiones">
+                <span class="tab-form-icon" aria-hidden="true"><i class="fas fa-folder-open"></i></span> Gestiones
+            </button>
+            <button type="button" class="tab-btn tab-btn-form tab-btn-accidentes" data-target="accidentes">
+                <span class="tab-form-icon" aria-hidden="true"><i class="fas fa-car-burst"></i></span> Accidentes
+            </button>
+            <button type="button" class="tab-btn tab-btn-form tab-btn-robo-oc" data-target="robo_oc">
+                <span class="tab-form-icon" aria-hidden="true"><i class="fas fa-mask-face"></i></span> Robo OC
+            </button>
+            <button type="button" class="tab-btn tab-btn-form tab-btn-robo-incendio btn-highlight" data-target="robo_incendio">
+                <span class="tab-form-icon" aria-hidden="true"><i class="fas fa-fire-flame-simple"></i></span> Robo/Incendio
+            </button>
+        </nav>
+
+        <main class="dashboard-main">
+            <div id="loading-indicator" class="loading-container glass-panel">
+                <div class="loader-circle"></div>
+                <p>Sincronizando información de sus pólizas y denuncias...</p>
+            </div>
+
+            <div id="content-area" class="content-area hidden">
+                <!-- Data injected via JS -->
+                 <div id="tab-perfil" class="tab-pane active"></div>
+                 <div id="tab-polizas" class="tab-pane"></div>
+                 <div id="tab-gestiones" class="tab-pane"></div>
+                 <div id="tab-accidentes" class="tab-pane"></div>
+                 <div id="tab-robo_oc" class="tab-pane"></div>
+                 <div id="tab-robo_incendio" class="tab-pane"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Global Details Modal -->
+    <div id="portal-detail-modal" class="portal-modal-overlay">
+        <div class="portal-modal">
+            <div class="portal-modal-header">
+                <h2 id="pdm-title">Detalles</h2>
+                <button type="button" class="portal-modal-close" id="pdm-close" aria-label="Cerrar modal" title="Cerrar">
+                    <span class="portal-modal-close-icon" aria-hidden="true">✕</span>
+                </button>
+            </div>
+            <div class="portal-modal-body" id="pdm-body">
+                <!-- Inyectado via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Multi-Chat Widget -->
+    <div id="multi-chat-widget" class="multi-chat-widget">
+      <div id="chat-options-menu" class="chat-options-menu hidden">
+        <div class="menu-header">
+          <span>¿Cómo prefieres hablar?</span>
+        </div>
+        <div class="options-grid">
+          <a href="https://wa.me/5493417035515" target="_blank" class="chat-option whatsapp">
+            <div class="option-icon"><i class="fab fa-whatsapp"></i></div>
+            <div class="option-label">WhatsApp</div>
+          </a>
+          <a href="https://t.me/sira_seguros_bot" target="_blank" class="chat-option telegram">
+            <div class="option-icon"><i class="fab fa-telegram-plane"></i></div>
+            <div class="option-label">Telegram</div>
+          </a>
+          <div onclick="toggleWebChat()" class="chat-option webchat">
+            <div class="option-icon"><i class="fas fa-comment-alt"></i></div>
+            <div class="option-label">Chat Web</div>
+          </div>
+        </div>
+      </div>
+      <button id="multi-chat-toggle" class="multi-chat-toggle cira-bubble" onclick="toggleChatMenu()">
+        <img src="assets/ia-avatar.png" alt="Sira" class="cira-avatar-bubble">
+        <span class="notification-dot"></span>
+      </button>
+    </div>
+
+    <div id="web-chat-window" class="web-chat-window hidden">
+      <div class="chat-window-header">
+        <div class="header-info-chat">
+          <img src="assets/ia-avatar.png" alt="Sira" class="chat-logo-small cira-header-img">
+          <span class="chat-title">Sira - Asesor Inteligente</span>
+        </div>
+        <button onclick="toggleWebChat()" class="close-chat-btn">&times;</button>
+      </div>
+      <div id="chat-messages" class="chat-messages">
+        <div class="message assistant">
+          <div class="bubble">¡Hola! 👋 Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?</div>
+        </div>
+      </div>
+      <div id="attachment-preview" class="attachment-preview hidden"></div>
+      <div class="chat-input-area">
+        <input type="file" id="chat-file-input" class="chat-file-input" accept="image/*,audio/*,.pdf,.doc,.docx,.txt,.csv,.xlsx,.xls" multiple>
+        <button id="attach-btn" class="chat-tool-btn" type="button" title="Adjuntar archivo"><i class="fas fa-paperclip"></i></button>
+        <input type="text" id="user-input" placeholder="Escribe un mensaje..." autocomplete="off">
+        <button id="record-btn" class="chat-tool-btn" type="button" title="Grabar audio"><i class="fas fa-microphone"></i></button>
+        <button id="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+
+
+    <script src="portal.js?v=final25"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="chat.js?v=portal-v2"></script>
+</body>
+</html>

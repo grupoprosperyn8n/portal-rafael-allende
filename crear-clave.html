@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SaaS Portal | Crear Clave</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="background-blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+    </div>
+
+    <main class="login-container">
+      <form id="registerForm" class="login-card">
+        <header>
+          <h1>Crear Contraseña</h1>
+          <p>Verifica tu identidad para crear tu clave de acceso</p>
+        </header>
+
+        <div class="input-group">
+          <label for="dni">Número de DNI</label>
+          <input
+            type="text"
+            id="dni"
+            placeholder="xxxxxxxx"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="patente">Patente (Vehículo Asociado)</label>
+          <input
+            type="text"
+            id="patente"
+            placeholder="AA123BB"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Elige una Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="********"
+            required
+            autocomplete="new-password"
+          />
+        </div>
+
+        <button type="submit" id="registerBtn">
+          <span class="btn-text">Crear mi cuenta</span>
+          <div class="loader"></div>
+        </button>
+
+        <div class="register-link" style="margin-bottom: 8px;">
+          <p>¿Ya tienes una clave? <a href="index.html">Inicia sesión</a></p>
+        </div>
+
+        <footer id="message" class="hidden"></footer>
+      </form>
+    </main>
+
+    <script src="registro.js"></script>
+  </body>
+</html>

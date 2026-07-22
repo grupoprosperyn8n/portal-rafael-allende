@@ -1,0 +1,578 @@
+:root {
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --bg-dark: #0f172a;
+  --card-bg: rgba(30, 41, 59, 0.7);
+  --text-main: #f8fafc;
+  --text-dim: #94a3b8;
+  --error: #ef4444;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Outfit", sans-serif;
+}
+
+body {
+  background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('assets/fondo.jpg') center/cover no-repeat fixed;
+  color: var(--text-main);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Background Animations */
+.background-blobs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.blob {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: var(--primary);
+  filter: blur(80px);
+  opacity: 0.2;
+  border-radius: 50%;
+  animation: move 20s infinite alternate;
+}
+
+.blob-1 {
+  top: -100px;
+  right: -100px;
+}
+.blob-2 {
+  bottom: -100px;
+  left: -100px;
+  background: #8b5cf6;
+}
+
+@keyframes move {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(100px, 100px);
+  }
+}
+
+/* Login Card */
+.login-container {
+  width: 100%;
+  max-width: 480px; /* Slightly wider to accommodate text */
+  padding: 20px;
+}
+
+.login-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-5px);
+}
+
+header {
+  margin-bottom: 32px;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+p {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+/* Form Styles */
+.input-group {
+  margin-bottom: 24px;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  color: var(--text-dim);
+}
+
+input {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 16px;
+  border-radius: 12px;
+  color: white;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+button {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+button:hover {
+  background: var(--primary-hover);
+  transform: scale(1.02);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Utilities */
+.hidden {
+  display: none;
+}
+
+.register-link p {
+  white-space: nowrap; /* Prevent line breaks */
+  font-size: 0.95rem;
+}
+
+/* Ensure it drops font size slightly on very small screens to fit */
+@media (max-width: 420px) {
+  .register-link p {
+    font-size: 0.8rem;
+  }
+}
+
+#message {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.error {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+}
+
+.loader {
+  width: 20px;
+  height: 20px;
+  border: 2px solid white;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: none;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ... Existing Code ... */
+button.loading .loader {
+  display: block;
+}
+
+/* 2-Column Grid Layout for Registration */
+.two-column-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 600px; /* Wider for 2 columns */
+}
+
+/* Full width elements in grid */
+.two-column-form header,
+.two-column-form .full-width,
+.two-column-form button,
+.two-column-form .register-link,
+.two-column-form #message {
+  grid-column: span 2;
+}
+
+/* Ensure inputs take full available width in their cell */
+.two-column-form .input-group {
+  margin-bottom: 0; /* Let grid gap handle padding */
+}
+
+/* ... Existing media query ... */
+@media (max-width: 600px) {
+  .two-column-form {
+    grid-template-columns: 1fr; /* Stack on mobile */
+  }
+  .two-column-form header,
+  .two-column-form .full-width,
+  .two-column-form button,
+  .two-column-form .register-link,
+  .two-column-form #message {
+    grid-column: span 1;
+  }
+}
+
+/* Wider container for registration page */
+.register-container {
+  max-width: 700px !important;
+}
+
+/* =========================================
+   Welcome Page Styles
+   ========================================= */
+
+.welcome-container {
+  width: 100%;
+  max-width: 1000px; /* Slightly narrower */
+  height: 80vh; /* Controlled height */
+  min-height: 550px;
+  padding: 0; /* Remove outer padding impact */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto; /* Center vertically if flex parent allows */
+}
+
+/* Ensure body centers it */
+body {
+  /* existing styles... */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.glass-panel {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  max-height: 600px; /* Cap height to prevent overflow on small laptops */
+  background: var(--card-bg); 
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Left Side: Inspiration */
+.inspirational-section {
+  flex: 1.1; 
+  position: relative;
+  background-color: #1e1b4b;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+/* Overlay for text readability on image */
+.inspirational-section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.7), rgba(99, 102, 241, 0.3));
+  z-index: 1;
+}
+
+.quote-container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 85%;
+}
+
+.quote-text {
+  font-size: 1.6rem; /* Reduced */
+  font-weight: 300;
+  font-style: italic;
+  color: #fff;
+  line-height: 1.4;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Right Side: Actions */
+.action-section {
+  flex: 0.9;
+  padding: 30px 40px; /* Reduced padding */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.4);
+  gap: 15px; /* Tighter gap */
+}
+
+.welcome-header {
+  margin-bottom: 5px; 
+}
+
+.greeting-pre {
+  color: var(--text-dim);
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.welcome-header h1 {
+  font-size: 2.5rem; /* Reduced from 3.5rem */
+  margin-bottom: 8px;
+  line-height: 1.1;
+  background: linear-gradient(to right, #6366f1, #c084fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.role-gerente { background: rgba(234, 179, 8, 0.15); color: #facc15; border-color: rgba(234, 179, 8, 0.3); }
+.role-dueño { background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
+.role-empleado { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
+
+.action-area {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.instruction-text {
+  color: var(--text-main);
+  opacity: 0.9;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+/* Primary Action Button - The BIG ONE */
+.primary-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px; /* Reduced from 24px */
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: white;
+  text-decoration: none;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px -5px rgba(99, 102, 241, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.primary-action-btn:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 15px 30px -8px rgba(99, 102, 241, 0.7);
+  filter: brightness(1.1);
+}
+
+.welcome-footer {
+  margin-top: 10px; 
+  padding-top: 5px;
+  text-align: center;
+}
+
+/* Logout - Subtle/Secondary */
+.logout-link {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.05);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 8px 20px;
+  border-radius: 10px;
+  transition: all 0.2s;
+  display: inline-block;
+  opacity: 0.6;
+}
+
+.logout-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--error);
+  border-color: rgba(239, 68, 68, 0.3);
+  opacity: 1;
+}
+
+/* Status Messages */
+.status-message {
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.status-message strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.status-message.pending {
+  border-color: rgba(234, 179, 8, 0.3);
+  background: rgba(234, 179, 8, 0.1);
+  color: #facc15;
+}
+
+.status-message.error {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+}
+
+.retry-btn {
+  margin-top: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: auto;
+  padding: 8px 24px;
+  font-size: 0.9rem;
+}
+
+.retry-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   Portal Overlay (Iframe) Styles
+   ========================================= */
+.portal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-dark);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.4s ease;
+}
+
+.portal-header {
+  height: 64px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+
+.portal-logo {
+  font-weight: 700;
+  font-size: 1.2rem;
+  background: linear-gradient(to right, #6366f1, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-user {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.close-portal-btn {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  width: auto;
+}
+
+.close-portal-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  transform: translateY(-1px);
+}
+
+.iframe-container {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  background: #0f172a; /* Fallback */
+}
+
+#portal-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: white; /* Airtable usually has white bg */
+}
+
+/* Ensure hidden utility works with display:flex overrides */
+.portal-overlay.hidden {
+  display: none !important;
+}

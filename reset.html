@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SaaS Portal | Nueva Clave</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="background-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <main class="login-container">
+    <form id="resetForm" class="login-card">
+      <header>
+        <h1>Crea tu nueva clave</h1>
+        <p>Escribe una contraseña segura abajo</p>
+      </header>
+
+      <div class="input-group">
+        <label for="password">Nueva Contraseña</label>
+        <input type="password" id="password" placeholder="********" required autocomplete="new-password" />
+      </div>
+
+      <button type="submit" id="resetBtn">
+        <span class="btn-text">Confirmar Cambio</span>
+        <div class="loader"></div>
+      </button>
+
+      <footer id="message" class="hidden"></footer>
+    </form>
+  </main>
+
+  <script>
+    const resetForm = document.getElementById('resetForm');
+    const resetBtn = document.getElementById('resetBtn');
+    const messageEl = document.getElementById('message');
+
+    // Extraer token de la URL: ?token=XYZ
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    if (!token) {
+        messageEl.textContent = "Error: El enlace es inhábil o le falta el token de seguridad.";
+        messageEl.classList.remove('hidden');
+        messageEl.classList.add('error');
+        resetBtn.disabled = true;
+    }
+
+    const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+    const API_URL = isLocal ? 'http://127.0.0.1:8000/api/portal/reset-password' : 'https://web-production-2584d.up.railway.app/api/portal/reset-password';
+
+    resetForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const password = document.getElementById('password').value.trim();
+        
+        messageEl.classList.add('hidden');
+        messageEl.classList.remove('error');
+        resetBtn.classList.add('loading');
+        resetBtn.disabled = true;
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token, password })
+            });
+            const data = await response.json();
+            if (response.ok && data.valid) {
+                messageEl.textContent = "¡Contraseña actualizada exitosamente! Redirigiendo...";
+                messageEl.classList.remove('hidden');
+                messageEl.style.color = "#10b981";
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2500);
+            } else {
+                throw new Error(data.message || 'No se pudo actualizar la contraseña');
+            }
+        } catch (error) {
+            messageEl.textContent = error.message;
+            messageEl.classList.remove('hidden');
+            messageEl.classList.add('error');
+            resetBtn.disabled = false;
+        } finally {
+            resetBtn.classList.remove('loading');
+        }
+    });
+  </script>
+</body>
+</html>

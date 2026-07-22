@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SaaS Portal | Recuperar Clave</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="background-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <main class="login-container">
+    <form id="recoverForm" class="login-card">
+      <header>
+        <h1>Recuperar Contraseña</h1>
+        <p>Ingresa tu DNI. Te enviaremos un WhatsApp con un enlace seguro.</p>
+      </header>
+
+      <div class="input-group">
+        <label for="dni">Número de DNI</label>
+        <input type="text" id="dni" placeholder="xxxxxxxx" inputmode="numeric" pattern="[0-9]*" required />
+      </div>
+
+      <button type="submit" id="recoverBtn">
+        <span class="btn-text">Enviar enlace Seguro</span>
+        <div class="loader"></div>
+      </button>
+
+      <div class="register-link" style="margin-bottom: 8px;">
+        <p>¿Recordaste tu clave? <a href="index.html">Inicia sesión</a></p>
+      </div>
+
+      <footer id="message" class="hidden"></footer>
+    </form>
+  </main>
+
+  <script>
+    const recoverForm = document.getElementById('recoverForm');
+    const recoverBtn = document.getElementById('recoverBtn');
+    const messageEl = document.getElementById('message');
+
+    const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || window.location.protocol === 'file:';
+    const API_URL = isLocal ? 'http://127.0.0.1:8000/api/portal/forgot-password' : 'https://web-production-2584d.up.railway.app/api/portal/forgot-password';
+
+    // Warm-up: despertar Railway si está frío
+    fetch(isLocal ? 'http://127.0.0.1:8000/' : 'https://web-production-2584d.up.railway.app/', { method: 'HEAD' }).catch(() => {});
+
+    recoverForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const dni = document.getElementById('dni').value.trim();
+        
+        messageEl.classList.add('hidden');
+        messageEl.classList.remove('error');
+        recoverBtn.classList.add('loading');
+        recoverBtn.disabled = true;
+
+        try {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 30000);
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ dni }),
+                signal: controller.signal
+            });
+            clearTimeout(timeout);
+
+            const data = await response.json();
+            if (response.ok && data.valid) {
+                messageEl.textContent = data.message;
+                messageEl.classList.remove('hidden');
+                messageEl.style.color = "#10b981";
+            } else {
+                throw new Error(data.message || 'No se pudo enviar el enlace');
+            }
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                messageEl.textContent = 'El servidor está tardando en responder. Por favor intentá de nuevo en unos segundos.';
+            } else if (error.message === 'Failed to fetch' || error.message.includes('NetworkError') || error.message.includes('ERR_CONNECTION')) {
+                messageEl.textContent = 'No se pudo conectar con el servidor. Verificá tu conexión a internet e intentá de nuevo.';
+            } else {
+                messageEl.textContent = error.message;
+            }
+            messageEl.classList.remove('hidden');
+            messageEl.classList.add('error');
+        } finally {
+            recoverBtn.classList.remove('loading');
+            recoverBtn.disabled = false;
+        }
+    });
+  </script>
+</body>
+</html>

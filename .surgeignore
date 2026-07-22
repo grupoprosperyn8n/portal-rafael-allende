@@ -1,0 +1,25 @@
+# Excluir entornos virtuales y dependencias de backend
+venv/
+.venv/
+backend/venv/
+__pycache__/
+*.pyc
+
+# Excluir carpetas de sistema y logs
+.git/
+.github/
+.python-version
+.env
+requirements.txt
+
+# Excluir archivos temporales y de diagnóstico
+.tmp/
+/tmp/
+*check_airtable_fields.py
+
+# Excluir documentos de memoria si no son necesarios en el servidor
+MEMORIA_OPENCOD/
+MEMORIA.md
+task.md
+implementation_plan.md
+walkthrough.md
