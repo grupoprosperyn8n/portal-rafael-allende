@@ -852,20 +852,18 @@ function suggestQuickReplies(replyText, data = {}) {
     // ── FLOW 7: STATUS ──
     else if (isStatusSensitive) {
         addQuickReplies([
-            { label: 'Ver estado' },
-            { label: 'Ver detalle' },
-            { label: 'Nueva consulta' },
+            { label: 'Soy cliente' },
+            { label: 'No soy cliente' },
         ]);
-        contextualHint = 'Revisemos tus gestiones en curso';
+        contextualHint = 'Para ver el estado de tu gestión, primero verifiquemos tu estado';
     }
     // ── FLOW 8: DOCS ──
     else if (isDocSensitive) {
         addQuickReplies([
-            { label: 'Qué me falta' },
-            { label: 'Subir documento' },
-            { label: 'Hablar con asesor' },
+            { label: 'Soy cliente' },
+            { label: 'No soy cliente' },
         ]);
-        contextualHint = 'Revisemos tu documentación';
+        contextualHint = 'Para revisar documentación, primero verifiquemos tu estado';
     }
     // ── FLOW 9: HUMAN HANDOFF ──
     else if (isHumanHandoff) {
