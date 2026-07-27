@@ -164,15 +164,15 @@ button:active {
 }
 
 .register-link {
-  margin-top: 32px;
-  margin-bottom: 4px;
+  margin-top: 16px;
+  margin-bottom: 0;
 }
 
 .register-link p {
   white-space: nowrap;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--text-dim);
-  line-height: 1.9;
+  line-height: 1.4;
 }
 
 .register-link a {
