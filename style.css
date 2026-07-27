@@ -181,7 +181,11 @@ button:active {
 
 /* Ensure it drops font size slightly on very small screens to fit */
 @media (max-width: 420px) {
-  .register-link p {
+.register-link {
+  margin-top: 20px;
+}
+
+.register-link p {
     font-size: 0.8rem;
   }
 }
