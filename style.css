@@ -166,6 +166,17 @@ button:active {
 .register-link p {
   white-space: nowrap; /* Prevent line breaks */
   font-size: 0.95rem;
+  color: var(--text-dim);
+}
+
+.register-link a {
+  color: #ffffff;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.register-link a:hover {
+  color: #e2e8f0;
 }
 
 /* Ensure it drops font size slightly on very small screens to fit */
