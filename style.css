@@ -163,10 +163,16 @@ button:active {
   display: none;
 }
 
+.register-link {
+  margin-top: 32px;
+  margin-bottom: 4px;
+}
+
 .register-link p {
-  white-space: nowrap; /* Prevent line breaks */
+  white-space: nowrap;
   font-size: 0.95rem;
   color: var(--text-dim);
+  line-height: 1.9;
 }
 
 .register-link a {
