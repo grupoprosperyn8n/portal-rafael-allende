@@ -2424,16 +2424,42 @@ details[open] .analyzer-toggle-icon { transform: rotate(180deg); }
   border-color: #30d158;
   color: #fff;
 }
-.quick-reply-back {
-  border-color: rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--white-50);
-  padding: 6px 8px;
-  min-width: auto;
-  font-size: 0.7rem;
+.quick-replies-nav {
+  flex-basis: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
 }
-.quick-reply-back:hover {
-  background: rgba(255, 255, 255, 0.1);
+
+.quick-reply-chip.quick-reply-back,
+.quick-reply-chip.quick-reply-again {
+  padding: 7px 13px;
+  font-size: 0.78rem;
+}
+
+.quick-reply-chip.quick-reply-back {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px dashed rgba(255, 255, 255, 0.32);
+  color: var(--white-70);
+}
+
+.quick-reply-chip.quick-reply-back:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.55);
+  color: var(--white);
+}
+
+.quick-reply-chip.quick-reply-again {
+  background: rgba(10, 132, 255, 0.14);
+  border-color: rgba(10, 132, 255, 0.45);
+  color: #bfe0ff;
+}
+
+.quick-reply-chip.quick-reply-again:hover {
+  background: rgba(10, 132, 255, 0.26);
+  border-color: var(--primary-light);
   color: var(--white);
 }
 .quick-reply-hint {
