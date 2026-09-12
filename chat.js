@@ -836,7 +836,7 @@ function suggestQuickReplies(replyText, data = {}) {
     else if (isClientNo) {
         clientValidationFlow = 'not_client';
         chipsSet = [
-            { label: 'Registrarme como cliente', url: 'https://portal.rafaelallendeseguros.digital/registro.html' },
+            { label: 'Registrarme como cliente', url: 'https://registro.rafaelallendeseguros.digital/register.html' },
             { label: 'Recuperar contraseña', url: 'https://portal.rafaelallendeseguros.digital/recuperar-clave.html' },
             { label: 'Seguir sin validarme' },
         ];
@@ -848,7 +848,7 @@ function suggestQuickReplies(replyText, data = {}) {
             { label: 'Consultas generales' },
             { label: 'Cotizar seguro' },
             { label: 'Agendar asesoría', url: 'https://linktree.rafaelallendeseguros.digital/?modal=asesoria' },
-            { label: 'Contactar WhatsApp', url: 'https://wa.me/5493417035515' },
+            { label: 'Contactar por WhatsApp', url: 'https://wa.me/5493417035515' },
         ];
         contextualHint = 'Estas son las gestiones disponibles para vos';
     }
@@ -858,7 +858,7 @@ function suggestQuickReplies(replyText, data = {}) {
             { label: 'Hay heridos' },
             { label: 'Necesito auxilio' },
             { label: 'Hablar con asesor' },
-            { label: 'Llamame ya', url: 'https://wa.me/5493417035515' },
+            { label: 'Contactar ya por WhatsApp', url: 'https://wa.me/5493417035515' },
         ];
         contextualHint = 'Contame tu situación y te asisto urgente';
     }
@@ -907,7 +907,7 @@ function suggestQuickReplies(replyText, data = {}) {
     else if (isAdvisory) {
         chipsSet = [
             { label: 'Agendar ahora', url: 'https://linktree.rafaelallendeseguros.digital/?modal=asesoria' },
-            { label: 'Contacto WhatsApp', url: 'https://wa.me/5493417035515' },
+            { label: 'Contactar por WhatsApp', url: 'https://wa.me/5493417035515' },
             { label: 'Otra consulta' },
         ];
         contextualHint = 'Reservá tu turno cuando quieras';
@@ -935,7 +935,7 @@ function suggestQuickReplies(replyText, data = {}) {
     // ── FLOW 9: HUMAN HANDOFF ──
     else if (isHumanHandoff) {
         chipsSet = [
-            { label: 'Llamame', url: 'https://wa.me/5493417035515' },
+            { label: 'Contactar por WhatsApp', url: 'https://wa.me/5493417035515' },
             { label: 'Dejar mi contacto' },
             { label: 'Nueva consulta' },
         ];
@@ -962,7 +962,7 @@ function suggestQuickReplies(replyText, data = {}) {
         chipsSet = [
             { label: 'Agendar asesoría', url: 'https://linktree.rafaelallendeseguros.digital/?modal=asesoria' },
             { label: 'Hablar con asesor' },
-            { label: 'Contacto WhatsApp', url: 'https://wa.me/5493417035515' },
+            { label: 'Contactar por WhatsApp', url: 'https://wa.me/5493417035515' },
         ];
         contextualHint = 'Un asesor te ayuda con esta gestión';
     }
@@ -1079,3 +1079,30 @@ window.openInsuranceChat = function openInsuranceChat() {
         if (++retries > 15) clearInterval(interval); // stop after ~7.5s
     }, 500);
 })();
+
+// --- "Nueva conversación": hilo limpio (sesión nueva + UI reseteada) ---
+const INITIAL_CHAT_HTML = chatMessages.innerHTML;
+
+function resetConversation() {
+    abortActiveFetch();
+    // Sesión nueva: también resetea la memoria del agente (clave por sesión).
+    try { localStorage.removeItem(WEBCHAT_SESSION_KEY); } catch (e) { /* noop */ }
+    getWebChatSessionId(); // genera y persiste una nueva
+    quickRepliesHistory = [];
+    currentQuickReplies = [];
+    lastValidationStatus = '';
+    lastPortalAccess = '';
+    lastDni = '';
+    lastPortalPassword = '';
+    conversationIntent = '';
+    lastUserMessage = '';
+    lastUserIntent = '';
+    clientValidationFlow = '';
+    pendingAttachments = [];
+    renderPreview();
+    if (userInput) userInput.value = '';
+    chatMessages.innerHTML = INITIAL_CHAT_HTML;
+    chatMessages.scrollTop = 0;
+}
+
+window.resetConversation = resetConversation;

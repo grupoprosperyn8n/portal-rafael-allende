@@ -53,6 +53,12 @@ registerForm.addEventListener('submit', async (e) => {
             messageEl.textContent = 'No se pudo conectar con el servidor. Verificá tu conexión a internet e intentá de nuevo.';
         } else {
             messageEl.textContent = error.message;
+            if (/no encontrad/i.test(String(error.message || ''))) {
+                const hint = document.createElement('div');
+                hint.style.cssText = 'font-size:0.85rem;color:#94a3b8;margin-top:6px;';
+                hint.innerHTML = '¿Todavía no sos cliente, o los datos no coinciden? <a href="https://registro.rafaelallendeseguros.digital/register.html" style="color:#60a5fa;">Creá tu cuenta</a> · <a href="https://portal.rafaelallendeseguros.digital" style="color:#60a5fa;">Volvé al inicio</a>';
+                messageEl.appendChild(hint);
+            }
         }
         messageEl.classList.remove('hidden');
         messageEl.classList.add('error');

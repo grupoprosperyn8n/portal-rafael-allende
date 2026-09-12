@@ -2034,6 +2034,35 @@ details[open] .analyzer-toggle-icon { transform: rotate(180deg); }
   transform: scale(1.04);
 }
 
+.new-chat-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  margin-right: 4px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border-radius: 999px;
+  flex-shrink: 0;
+  align-self: center;
+  opacity: 0.9;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.new-chat-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.04);
+  opacity: 1;
+}
+
 .chat-messages {
   flex: 1;
   padding: 15px;
