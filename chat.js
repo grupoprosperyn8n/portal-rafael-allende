@@ -547,7 +547,7 @@ async function sendMessage() {
         if (!response.ok) throw new Error('Error en la respuesta del servidor');
 
         const data = await response.json();
-        chatMessages.removeChild(typingDiv);
+        if (chatMessages.contains(typingDiv)) chatMessages.removeChild(typingDiv);
         if (data.silent) return;
         lastValidationStatus = data.validation_status || '';
         lastPortalAccess = data.portal_access || '';
@@ -561,9 +561,9 @@ async function sendMessage() {
             suggestQuickReplies(reply, data);
         }
     } catch (error) {
+        if (chatMessages.contains(typingDiv)) chatMessages.removeChild(typingDiv);
         if (error && error.name === 'AbortError') return;
         console.error('Error Chat Portal:', error);
-        if (chatMessages.contains(typingDiv)) chatMessages.removeChild(typingDiv);
         addMessage('Lo siento, tengo una demora técnica. Por favor, intenta de nuevo o escríbeme por WhatsApp.', 'assistant');
     } finally {
         if (activeFetchCtl === ctl) activeFetchCtl = null;
@@ -741,6 +741,33 @@ function commitQuickReplies(replies) {
     renderQuickReplies(currentQuickReplies);
 }
 
+// "Elegir otra respuesta" (opcion A): cuando el agente responde al pedido de
+// "otra respuesta" con un set GENERICO (o vacio), en vez de reiniciar el ciclo
+// volvemos a ofrecer las opciones contextuales del tema en curso.
+const DEFAULT_OTHER_REPLIES = [
+    { label: 'Cotizar seguro' },
+    { label: 'Consultar siniestro' },
+    { label: 'Hablar con asesor' },
+    { label: 'Contactar por WhatsApp', url: 'https://wa.me/5493417035515' },
+];
+const GENERIC_REPLY_LABELS = new Set([
+    'soy cliente', 'no soy cliente', 'otra consulta', 'hablar con asesor', 'nueva consulta',
+    'crear clave', 'recuperar clave',
+]);
+
+function buildOtherReplies(snapshot) {
+    let base = (snapshot || []).map((c) => (typeof c === 'string' ? { label: c } : { ...c }));
+    const snapshotGenerico = !base.length ||
+        base.every((c) => GENERIC_REPLY_LABELS.has(String(c.label || '').trim().toLowerCase()));
+    if (snapshotGenerico) {
+        base = DEFAULT_OTHER_REPLIES.map((c) => ({ ...c }));
+    }
+    if (!base.some((c) => /asesor|whatsapp/i.test(String(c.label || '')))) {
+        base.push({ label: 'Hablar con asesor' });
+    }
+    return base;
+}
+
 // Envia una opcion elegida (chip o boton fijo) al agente.
 function sendQuickReply(label) {
     const existing = chatMessages.querySelector('.quick-replies');
@@ -789,6 +816,7 @@ function sendQuickReply(label) {
 
 function suggestQuickReplies(replyText, data = {}) {
     let chipsSet = null;
+    const snapshotAntes = currentQuickReplies.slice();
     const lower = replyText.toLowerCase();
     const intent = (data.intent || conversationIntent || '').toLowerCase();
     const userIntentLower = lastUserIntent.toLowerCase();
@@ -1000,7 +1028,20 @@ function suggestQuickReplies(replyText, data = {}) {
         }
     }
 
-    commitQuickReplies(chipsSet);
+    // Opcion A "Elegir otra respuesta": si la respuesta al pedido de otra
+    // respuesta trae un set generico (o vacio), no reiniciar el ciclo:
+    // volver a ofrecer las opciones contextuales del tema en curso.
+    const esReeleccion = lastUserMessage === OTHER_ANSWER_TEXT;
+    const setGenerico = !chipsSet || chipsSet.length === 0 ||
+        chipsSet.every((c) => GENERIC_REPLY_LABELS.has(String(c.label || c).trim().toLowerCase()));
+    if (esReeleccion && setGenerico) {
+        chipsSet = buildOtherReplies(snapshotAntes);
+        contextualHint = 'Elegí otra opción de este tema, o escribime lo que necesites';
+        currentQuickReplies = chipsSet.slice();
+        renderQuickReplies(currentQuickReplies);
+    } else {
+        commitQuickReplies(chipsSet);
+    }
 
     // Apply contextual hint
     if (contextualHint) {
